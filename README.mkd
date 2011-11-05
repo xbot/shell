@@ -6,4 +6,6 @@ This repo hosts miscellaneous shell scripts I use in my daily life.
 Resources
 ---------
 
-* **wm.sh**: A wrapper of wmctrl which handles common window-manager's tasks.
+* **wm.sh**:       A wrapper of wmctrl which handles common window-manager's tasks.
+* **dualhead.sh**: A wrapper of xrandr which sets dualhead displaying up.
+* **prxmmgr.sh**:  A manager for all proxy scripts in the folder "proxy".
