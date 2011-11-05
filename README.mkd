@@ -6,4 +6,4 @@ This repo hosts miscellaneous shell scripts I use in my daily life.
 Resources
 ---------
 
-* wm.sh: A wrapper of wmctrl which handles common window-manager's tasks.
+* **wm.sh**: A wrapper of wmctrl which handles common window-manager's tasks.
