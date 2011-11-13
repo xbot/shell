@@ -9,3 +9,4 @@ Resources
 * **wm.sh**:       A wrapper of wmctrl which handles common window-manager's tasks.
 * **dualhead.sh**: A wrapper of xrandr which sets dualhead displaying up.
 * **prxmmgr.sh**:  A manager for all proxy scripts in the folder "proxy".
+* **yyets.py**:    A torrents download helper for ftp://zhongzi.yyets.net.
