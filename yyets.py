@@ -52,7 +52,7 @@ def DownloadTorrents(session, lst):
 
 def ShowTorrents(lst):
     for t in lst:
-        print >> sys.stdout,"%s %s" % (t.getTime("%Y-%m-%d"),t.getTorrent(True).encode('utf-8'))
+        print >> sys.stdout,"%s %s" % (t.getTime("%Y-%m-%d"),t.getTorrent(True).encode(sys.stdin.encoding))
 
 def PickTorrents(lst):
     '''Let user pick torrents to download
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     # Fetch torrents
     ftp = ftplib.FTP('zhongzi.yyets.net')
     ftp.login('anonymous', 'x')
-    kwords = '*'.join(args).decode('utf-8').encode('gbk')
+    kwords = '*'.join(args).decode(sys.stdin.encoding).encode('gbk')
     lst = FetchTorrentList(ftp, kwords=kwords, past=past)
     if len(lst) == 0:
         print >> sys.stdout,'No torrents found.'
