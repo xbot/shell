@@ -6,7 +6,7 @@ PKG=$1
 DIR=`basename $PKG`
 DIR=${DIR%.*}
 TMP=`mktemp -d --tmpdir='.' 'unpack.XXXXXX'`
-LANG=zh_CN.GBK 7z e $PKG -o$TMP
+LC_ALL=zh_CN.GBK 7z e $PKG -o$TMP
 if [ "$TMP" != "" -a -d "$TMP" ]; then
     cd "$TMP"
     convmv --notest -f gbk -t utf8 *

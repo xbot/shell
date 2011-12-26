@@ -11,4 +11,5 @@ Resources
 * **prxmmgr.sh**:   A manager for all proxy scripts in the folder "proxy".
 * **yyets.py**:     A torrents download helper for ftp://zhongzi.yyets.net.
 * **unpackgbk.sh**: Unpack archieved packages which encoded in GBK.
+* **punzip.php**:   Another extractor for zip archives encoded in GBK, written in PHP.
 * **killer.sh**:    Kill all processes containning the given keyword, sweet for those started with long commandlines.
