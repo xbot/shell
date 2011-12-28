@@ -13,3 +13,4 @@ Resources
 * **unpackgbk.sh**: Unpack archieved packages which encoded in GBK.
 * **punzip.php**:   Another extractor for zip archives encoded in GBK, written in PHP.
 * **killer.sh**:    Kill all processes containning the given keyword, sweet for those started with long commandlines.
+* **savepower.sh**: Set cpufreq to powersave mode, dual core only.
