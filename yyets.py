@@ -4,7 +4,7 @@ import ftplib,datetime,sys,getopt,tempfile,subprocess,os,types
 
 __version__ = '0.1.0'
 __author__ = 'Lenin Lee <lenin.lee@gmail.com>'
-__website__ = 'http://sinolog.it'
+__website__ = 'http://0x3f.org'
 __editor__ = None
 
 class Torrent(object):
