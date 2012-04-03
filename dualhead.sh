@@ -20,8 +20,10 @@ restart_widget()
 set_dualhead()
 {
     xrandr --output LVDS1 --auto
-    xrandr --output VGA1 --auto
-    xrandr --output VGA1 --right-of LVDS1
+    #xrandr --output VGA1 --auto
+    #xrandr --output VGA1 --right-of LVDS1
+    xrandr --output HDMI1 --auto
+    xrandr --output HDMI1 --right-of LVDS1
     restart_widget
 }
 
@@ -39,6 +41,13 @@ set_vga()
     restart_widget
 }
 
+set_hdmi()
+{
+    xrandr --output LVDS1 --off
+    xrandr --output HDMI1 --auto
+    restart_widget
+}
+
 if [ $# -eq 0 ]; then
     set_dualhead
     exit
@@ -47,5 +56,6 @@ fi
 case "$1x" in
     "lvdsx") set_lvds;;
     "vgax") set_vga;;
+    "hdmix") set_hdmi;;
     *) echo 'Unknown parameter !';;
 esac

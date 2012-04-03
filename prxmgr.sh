@@ -22,7 +22,7 @@ touch_ssh_proxy () {
 
     # Touch session
     if [ $# -eq 1 ]; then
-        if ! screen -ls|grep '[0-9]\+\.'$1 > /dev/null 2>&1 ; then
+        if ! tmux list-sessions|grep -P "^${1}:.*$" > /dev/null 2>&1; then
             finger_print=-1
         fi
     fi
@@ -33,8 +33,8 @@ get_session_info () {
     if [ $# -eq 0 ]; then
         touch_ssh_proxy
         if [ $finger_print -eq 1 ]; then
-            local session=`screen -ls|grep '[0-9]\+\.ssh_[a-z]\+'|head -n 1|awk '{ print $1 }'`
-            gbl_session_name=${session##*.}
+            local session=`tmux list-sessions|grep -P "^ssh_[a-z]+:.*$"|head -n 1|awk '{print $1}'`
+            gbl_session_name=${session%:*}
             gbl_proxy_script=$gbl_proxy_dir/$gbl_session_name.sh
         fi
     fi
@@ -63,7 +63,7 @@ start_socks_proxy () {
 
     echo 'Starting SOCKS proxy ...'
     get_session_info $*
-    screen -dmS $gbl_session_name $gbl_proxy_script
+    tmux new-session -d -s "$gbl_session_name" "$gbl_proxy_script"
 
     while [ $finger_print -eq 0 ]; do
         sleep 1
@@ -87,8 +87,9 @@ stop_socks_proxy () {
     fi
 
     get_session_info $*
-    killall $gbl_session_name".sh"
-    echo 'SOCKS proxy is stopped .'
+    killall "${gbl_session_name}.sh"
+    test $? -eq 0 && echo 'SOCKS proxy is stopped .' || \
+        echo 'Failed to stop SOCKS proxy.' >&2
 }
 
 restart_socks_proxy () {
@@ -105,7 +106,7 @@ start_http_proxy () {
     fi
 
     echo 'Starting HTTP proxy ...'
-    screen -dmS 'proxy_http' polipo
+    tmux new-session -d -s "proxy_http" "polipo"
 
     while [ $finger_print -eq 0 ]; do
         sleep 1
@@ -122,7 +123,8 @@ stop_http_proxy () {
     fi
 
     killall polipo
-    echo 'HTTP proxy is stopped .'
+    test $? -eq 0 && echo 'HTTP proxy is stopped .' || \
+        echo 'Failed to stop HTTP proxy.' >&2
 }
 
 restart_http_proxy () {
@@ -151,8 +153,10 @@ stop_proxy_bundle () {
 }
 
 restart_proxy_bundle () {
-    restart_socks_proxy
-    restart_http_proxy
+    stop_http_proxy
+    stop_socks_proxy
+    start_socks_proxy
+    start_http_proxy
 }
 
 if [ $# -eq 0 ]; then
