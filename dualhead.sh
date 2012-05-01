@@ -4,17 +4,16 @@
 
 restart_widget()
 {
+    killall ipager
     killall trayer
     killall cairo-dock
+    pid=`ps aux|grep -v grep|grep gtim.py|awk '{print $2}'`
+    test -n "$pid" && kill -9 "$pid"
 
+    myipager
     mytrayer
-    cairo-dock &
-
-    tmp=`ps -ef|grep -v grep|grep -w gtim|awk '{ print $2 }'`
-    if ! [ -z $tmp ]; then
-        kill -9 $tmp
-    fi
     gtim &
+    #cairo-dock &
 }
 
 set_dualhead()
@@ -24,13 +23,18 @@ set_dualhead()
     #xrandr --output VGA1 --right-of LVDS1
     xrandr --output HDMI1 --auto
     xrandr --output HDMI1 --right-of LVDS1
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/1366/g' ~/.ipager/ipager.conf
+    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     restart_widget
 }
 
 set_lvds()
 {
     xrandr --output VGA1 --off
+    xrandr --output HDMI1 --off
     xrandr --output LVDS1 --auto
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
+    sed -i '/^ipager\.window\.y/ s/[0-9]\+/720/g' ~/.ipager/ipager.conf
     restart_widget
 }
 
@@ -38,6 +42,8 @@ set_vga()
 {
     xrandr --output LVDS1 --off
     xrandr --output VGA1 --auto
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
+    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     restart_widget
 }
 
@@ -45,6 +51,8 @@ set_hdmi()
 {
     xrandr --output LVDS1 --off
     xrandr --output HDMI1 --auto
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
+    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     restart_widget
 }
 
