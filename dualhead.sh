@@ -68,8 +68,10 @@ set_hdmi()
 
 handle_startup()
 {
-    hdmi_connected=`xrandr|grep -w connected|grep HDMI1 > /dev/null && echo 1 || echo 0`
-    test $hdmi_connected -eq 1 && set_hdmi || set_lvds
+    #hdmi_connected=`xrandr|grep -w connected|grep HDMI1 > /dev/null && echo 1 || echo 0`
+    #test $hdmi_connected -eq 1 && set_hdmi || set_lvds
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/1366/g' ~/.ipager/ipager.conf
+    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     restart_widgets
 }
 
