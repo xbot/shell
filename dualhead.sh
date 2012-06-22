@@ -31,12 +31,12 @@ restart_widgets()
 
 set_dualhead()
 {
-    xrandr --output LVDS1 --auto
     #xrandr --output VGA1 --auto
     #xrandr --output VGA1 --right-of LVDS1
-    xrandr --output HDMI1 --auto
-    xrandr --output HDMI1 --right-of LVDS1
-    sed -i '/^ipager\.window\.x/ s/[0-9]\+/1366/g' ~/.ipager/ipager.conf
+    #xrandr --output HDMI1 --left-of LVDS1
+    xrandr --output HDMI1 --auto --pos 0x0
+    xrandr --output LVDS1 --auto --pos 1920x312
+    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
     sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     restart_widgets
 }
@@ -83,8 +83,8 @@ fi
 cmd=""
 while getopts 'lrdc:s' opt; do
     case $opt in
-        l) set_lvds;shift;;
-        r) set_hdmi;shift;;
+        r) set_lvds;shift;;
+        l) set_hdmi;shift;;
         d) set_dualhead;shift;;
         c) cmd=$OPTARG;shift 2;;
         s) handle_startup;shift;;
