@@ -1,0 +1,120 @@
+#!/bin/bash
+#todo: Start downloading in a given directory
+#todo: Generate a play list and make it possible to watch videos while downloading.
+
+print_help_msg()
+{
+    echo "You see, I'm nothing ."
+    exit 0
+}
+
+check_param()
+{
+    if [ $# -ne 1 ]; then
+        print_help_msg
+    fi
+}
+
+check_m3u()
+{
+    if ! [ -a p.m3u ] || [ `wc -l p.m3u|awk '{ print $1 }'` -eq 0 ]; then
+        echo '#EXTM3U' > p.m3u
+    fi
+}
+
+maketmpdir()
+{
+    local dirname='evilclaw_'`date +%s`
+    while [ -e /tmp/${dirname} ]; do
+        dirname='evilclaw_'`date +%s`
+    done
+    mkdir -p /tmp/${dirname}
+    echo $dirname
+}
+
+export LC_ALL=en_US.UTF-8
+
+#TODO: complete this
+while getopts t: opt; do
+    case $opt in
+        t)
+            echo $OPTARG
+            shift 2
+            ;;
+        *)
+            echo '*'
+            ;;
+    esac
+done
+check_param $*
+
+# Make temporary directory
+tmpdir=`maketmpdir`
+tmppath="/tmp/${tmpdir}"
+curpath=`pwd`
+cd $tmppath
+
+# Parse downloading URLs and put them in meta.html
+ue=$(php -r "echo urlencode('$1');")
+parser="http://www.flvcd.com/parse.php?flag=&format=high&kw=$ue&sbt=%BF%AA%CA%BCGO%21"
+if ! wget $parser -U mozilla -O meta.html ; then
+    echo "Unable to touch the parser, check network status for the cause ."
+    exit 1
+fi
+if ! enca -L zh_CN -x utf-8 meta.html > /dev/null 2>&1; then
+    echo 'Error: Failed encoding meta.html !'
+    exit 1
+fi
+
+# Extract URLs and titles from meta.html
+album=`grep '<R>' meta.html`
+album=${album#*>}
+grep "<N>" meta.html > title.lst
+grep "<U>" meta.html > url.lst
+sed -i 's/<N>//g' title.lst
+sed -i 's/ //g' title.lst
+sed -i 's/<U>//g' url.lst
+
+# Check the extracted materials
+l1=`wc -l title.lst|awk '{ print $1 }'`
+l2=`wc -l url.lst|awk '{ print $1 }'`
+if [ "$l1" != "$l2" ]; then
+    echo "Error: Title.lst has $l1 lines, but url.lst got $l2."
+    exit 1
+fi
+if [ $l1 -eq 0 ]; then
+    echo "Error: Nothing got from the parser, check meta.html for detail info."
+    exit 1
+fi
+
+# Make the album directory
+if [ -e "${curpath}/${album}" ]; then
+    echo "Error: Target directory exists !"
+    exit 1
+fi
+mkdir -p "${curpath}/${album}"
+cp -f meta.html title.lst url.lst "${curpath}/${album}"
+cd "${curpath}/${album}"
+rm -rf $tmppath
+
+arrTitle=(`cat title.lst`)
+arrURL=(`cat url.lst`)
+
+check_m3u
+
+# Check p.m3u and descide from which item to start downloading
+idx=$((`wc -l p.m3u|awk '{ print $1 }'`-1))
+while [ $idx -lt $l1 ]; do
+    title=${arrTitle[$idx]}
+    url=${arrURL[$idx]}
+    idx=$((idx+1))
+    if ! wget $url -U mozilla -O "${title}.flv" ; then
+        echo "Failed fetching ${title}.flv, maybe its URL has been changed !"
+        exit 0
+    fi
+    cmd="sed -i '\$a\\${title}.flv' p.m3u"
+    eval $cmd
+done
+
+echo 'done !'
+exit 0
