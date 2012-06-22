@@ -15,3 +15,4 @@ Resources
 * **killer.sh**:      Kill all processes containning the given keyword, sweet for those started with long commandlines.
 * **savepower.sh**:   Set cpufreq to powersave mode, dual core only.
 * **dpms-sitter.sh**: Baby-sitter of the monitor's DPMS.
+* **evilclaw**:       Video downloader.
