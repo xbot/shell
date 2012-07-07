@@ -19,6 +19,7 @@ restart_widgets()
 {
     killall ipager
     killall trayer
+    killall volumeicon
     #killall cairo-dock
     pid=`ps aux|grep -v grep|grep gtim.py|awk '{print $2}'`
     test -n "$pid" && kill -9 "$pid"
@@ -26,6 +27,7 @@ restart_widgets()
     start_ipager 3
     start_trayer
     gtim &
+    volumeicon &
     #cairo-dock &
 }
 
