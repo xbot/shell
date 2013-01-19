@@ -38,9 +38,9 @@ set_dualhead()
     #xrandr --output HDMI1 --left-of LVDS1
     xrandr --output HDMI1 --auto --pos 0x0
     xrandr --output LVDS1 --auto --pos 1920x312
-    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
-    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
-    restart_widgets
+    #sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
+    #sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
+    #restart_widgets
 }
 set_lvds()
 {
@@ -49,7 +49,7 @@ set_lvds()
     xrandr --output LVDS1 --auto
     sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
     sed -i '/^ipager\.window\.y/ s/[0-9]\+/720/g' ~/.ipager/ipager.conf
-    restart_widgets
+    #restart_widgets
 }
 set_vga()
 {
@@ -57,7 +57,7 @@ set_vga()
     xrandr --output VGA1 --auto
     sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
     sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
-    restart_widgets
+    #restart_widgets
 }
 set_hdmi()
 {
@@ -65,16 +65,17 @@ set_hdmi()
     xrandr --output HDMI1 --auto
     sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
     sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
-    restart_widgets
+    #restart_widgets
 }
 
 handle_startup()
 {
-    #hdmi_connected=`xrandr|grep -w connected|grep HDMI1 > /dev/null && echo 1 || echo 0`
-    #test $hdmi_connected -eq 1 && set_hdmi || set_lvds
-    sed -i '/^ipager\.window\.x/ s/[0-9]\+/1366/g' ~/.ipager/ipager.conf
-    sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
-    restart_widgets
+    monitors=`xrandr -q|grep -w connected|awk '{print $1}'`
+    monitors=($monitors)
+    for m in ${monitors[@]}; do
+        [[ "$m" == "HDMI1" ]] && set_hdmi
+        [[ "$m" == "VGA1" ]] && set_vga
+    done
 }
 
 if [ $# -eq 0 ]; then
@@ -83,10 +84,11 @@ if [ $# -eq 0 ]; then
 fi
 
 cmd=""
-while getopts 'lrdc:s' opt; do
+while getopts 'lrvdc:s' opt; do
     case $opt in
         r) set_lvds;shift;;
         l) set_hdmi;shift;;
+        v) set_vga;shift;;
         d) set_dualhead;shift;;
         c) cmd=$OPTARG;shift 2;;
         s) handle_startup;shift;;
