@@ -144,8 +144,8 @@ gbl_proxy_script="${gbl_proxy_path}/${gbl_session_name}.sh"
 gbl_proxy_conf="${gbl_proxy_path}/http_${l_proxy_name}.conf"
 gbl_finger_print=0
 
-! test -f "$gbl_proxy_script" && echo "$gbl_proxy_script not found." && exit 1
-! test -f "$gbl_proxy_conf" && echo "$gbl_proxy_conf not found." && exit 1
-gbl_local_port=`grep "set l_local_port" "$gbl_proxy_script"|awk '{print $3}'`
+[[ "$l_proxy_type" =~ (bundle|socks) ]] && ! test -f "$gbl_proxy_script" && echo "$gbl_proxy_script not found." && exit 1
+[[ "$l_proxy_type" =~ (bundle|http) ]] && ! test -f "$gbl_proxy_conf" && echo "$gbl_proxy_conf not found." && exit 1
+[[ "$l_proxy_type" =~ (bundle|socks) ]] && gbl_local_port=`grep "set l_local_port" "$gbl_proxy_script"|awk '{print $3}'`
 
 eval "${l_action_type}_${l_proxy_type}"
