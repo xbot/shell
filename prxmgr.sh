@@ -1,6 +1,6 @@
 #!/bin/bash
 # A manager for all proxy scripts in the folder "proxy".
-# Lenin Lee <lenin.lee@gmail.com>
+# Author: Donie Leigh <donie.leigh@gmail.com>
 
 # gbl_proxy_path=~/.proxies
 gbl_proxy_path=`dirname $0`/proxy

@@ -1,6 +1,6 @@
 #!/bin/bash
 # A wrapper of wmctrl which handles common window-manager's tasks.
-# Author: Lenin Lee <lenin.lee@gmail.com>
+# Author: Donie Leigh <donie.leigh@gmail.com>
 
 current_desktop=`wmctrl -d|grep '*'|awk '{ print $1 }'`
 desktop_amount=`wmctrl -d|wc -l`

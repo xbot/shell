@@ -1,6 +1,6 @@
 #!/bin/bash
 # A wrapper of xrandr which sets dualhead displaying up.
-# Lenin Lee <lenin.lee@gmail.com>
+# Author: Donie Leigh <donie.leigh@gmail.com>
 
 start_ipager()
 {
@@ -36,19 +36,21 @@ set_dualhead()
     #xrandr --output VGA1 --auto
     #xrandr --output VGA1 --right-of LVDS1
     #xrandr --output HDMI1 --left-of LVDS1
-    xrandr --output HDMI1 --auto --pos 0x0
-    xrandr --output LVDS1 --auto --pos 1920x312
+    # xrandr --output VGA1 --auto --pos 0x0
+    xrandr --output HDMI1 --auto --pos 1366x0
+    xrandr --output LVDS1 --auto --pos 0x0
+    # xrandr --output HDMI1 --auto --pos 1920x312
     #sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
     #sed -i '/^ipager\.window\.y/ s/[0-9]\+/1032/g' ~/.ipager/ipager.conf
     #restart_widgets
 }
 set_lvds()
 {
-    xrandr --output VGA1 --off
+    # xrandr --output VGA1 --off
     xrandr --output HDMI1 --off
     xrandr --output LVDS1 --auto
-    sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
-    sed -i '/^ipager\.window\.y/ s/[0-9]\+/720/g' ~/.ipager/ipager.conf
+    # sed -i '/^ipager\.window\.x/ s/[0-9]\+/0/g' ~/.ipager/ipager.conf
+    # sed -i '/^ipager\.window\.y/ s/[0-9]\+/720/g' ~/.ipager/ipager.conf
     #restart_widgets
 }
 set_vga()
@@ -86,8 +88,8 @@ fi
 cmd=""
 while getopts 'lrvdc:s' opt; do
     case $opt in
-        r) set_lvds;shift;;
-        l) set_hdmi;shift;;
+        l) set_lvds;shift;;
+        r) set_hdmi;shift;;
         v) set_vga;shift;;
         d) set_dualhead;shift;;
         c) cmd=$OPTARG;shift 2;;
