@@ -20,3 +20,4 @@ Resources
 * **xosd_brightness.sh**:  Adjust screen brightness and show in OSD.
 * **random_wallpaper.sh**: Set wallpaper randomly.
 * **move_dir.sh**:         Move directories, handling conditions when the target already exists.
+* **create_webapp.sh**:    Create shortcuts for web apps.
