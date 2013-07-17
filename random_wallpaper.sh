@@ -2,11 +2,20 @@
 
 WALLPAPER_DIR="/home/monk/images"
 WALLPAPER_LINK="/home/monk/.wallpaper"
+WALLPAPER_FILE=`readlink -f "$WALLPAPER_LINK"`
 
-IMGS=( `ls $WALLPAPER_DIR/*.{jpg,png}` )
-IMG_COUNT=${#IMGS[@]}
-RAND=$((RANDOM % IMG_COUNT))
-IMG=${IMGS[RAND]}
+IMG_COUNT=`ls $WALLPAPER_DIR/*.{jpg,png}|wc -l`
 
-ln -sf "$IMG" "$WALLPAPER_LINK"
-feh --bg-scale "$WALLPAPER_LINK"
+while true; do
+    RAND=$((RANDOM % IMG_COUNT + 1))
+    IMG=`ls $WALLPAPER_DIR/*.{jpg,png}|sed -n ${RAND}p`
+    # echo "$IMG" >> ~/log.txt
+    # echo ${RAND}/${IMG_COUNT} >> ~/log.txt
+    if [[ "$IMG" == "$WALLPAPER_FILE" ]]; then
+        continue
+    fi
+
+    ln -sf "$IMG" "$WALLPAPER_LINK"
+    feh --bg-scale "$WALLPAPER_LINK"
+    break
+done
