@@ -14,7 +14,7 @@ while [ 1 -eq 1 ]; do
             exit
             ;;
         y|Y)
-            ps aux|grep -v $0|grep -v grep|grep $1|awk '{ print $2 }'|xargs kill -9
+            ps aux|grep -v $0|grep -v grep|grep $1|awk '{ print $2 }'|xargs sudo kill -9
             echo 'Processes killed.'
             exit
             ;;

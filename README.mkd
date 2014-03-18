@@ -22,3 +22,4 @@ Resources
 * **remove_wallpaper.sh**: Remove the current wallpaper.
 * **move_dir.sh**:         Move directories, handling conditions when the target already exists.
 * **create_webapp.sh**:    Create shortcuts for web apps.
+* **lockscreen.sh**:       Lock screen.
