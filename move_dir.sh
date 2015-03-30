@@ -14,7 +14,7 @@ if [ $# -ne 2 ] || ! [ -d "$1" ] || ([ -e "$2" ] && ! [ -d "$2" ]); then
 fi
 ! test -e "$2" && mv "$1" "$2" && exit 0
 if [ $OVERWRITE -eq 1 ]; then
-    cp -rf "$1"/* "$2"/ && rm -rf "$1"
+    cp -rf "$1"/. "$2"/ && rm -rf "$1"
 else
     cp -rf "$1" "$2" && rm -rf "$1"
 fi
