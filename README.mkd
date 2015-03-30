@@ -23,3 +23,4 @@ Resources
 * **move_dir.sh**:         Move directories, handling conditions when the target already exists.
 * **create_webapp.sh**:    Create shortcuts for web apps.
 * **lockscreen.sh**:       Lock screen.
+* **udev.py**:             udev monitor script.
