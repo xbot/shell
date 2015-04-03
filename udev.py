@@ -22,6 +22,15 @@ def remap_pokerii(device):
         os.system('setxkbmap')
         os.system('xmodmap ~/.Xmodmap')
 
+def remap_filco(device):
+    """ Do keyboard remapping when PokerII is plugged in.
+    """
+    if device.get('ID_VENDOR_ID') == '04d9' \
+            and device.action == 'add':
+        time.sleep(1)
+        os.system('setxkbmap')
+        os.system('xmodmap ~/.Xmodmap')
+
 def is_pid_running(pid):
     """ Check if the given pid is running.
 
@@ -56,10 +65,12 @@ def main():
         from pyudev.glib import MonitorObserver
         def device_event(observer, device):
             remap_pokerii(device)
+            remap_filco(device)
     except:
         from pyudev.glib import GUDevMonitorObserver as MonitorObserver
         def device_event(observer, action, device):
             remap_pokerii(device)
+            remap_filco(device)
 
     context = Context()
     monitor = Monitor.from_netlink(context)
