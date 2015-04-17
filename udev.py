@@ -23,7 +23,7 @@ def remap_pokerii(device):
         os.system('xmodmap ~/.Xmodmap')
 
 def remap_filco(device):
-    """ Do keyboard remapping when PokerII is plugged in.
+    """ Do keyboard remapping when Filco is plugged in.
     """
     if device.get('ID_VENDOR_ID') == '04d9' \
             and device.action == 'add':
