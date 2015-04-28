@@ -16,7 +16,7 @@ action=$1; shift
 set_volume() {
     amixer sset $CHANNEL unmute &> /dev/null &
     volume=$(amixer sset $CHANNEL $1 unmute | \
-        grep "Left: Playback" | \
+        grep "Mono: Playback" | \
         grep -o "\[[0-9]*%\]" | \
         tr '[%]' ' ')
 
@@ -26,7 +26,7 @@ set_volume() {
 # No args
 get_volume() {
     volume=$(amixer sget $CHANNEL | \
-        grep "Left: Playback" | \
+        grep "Mono: Playback" | \
         grep -o "\[[0-9]*%\]" | \
         tr '[%]' ' ')
 }
@@ -35,11 +35,10 @@ get_volume() {
 # No args
 mute_volume() {
     status=$(amixer sset $CHANNEL toggle | \
-        grep "Left: Playback" | \
+        grep "Mono: Playback" | \
         grep -o "\[on\]\|\[off\]" | \
         tr '[]' ' ' | \
         tr -d ' ')
-
 }
 
 # Use xosd to show a volume guage on the screen
@@ -47,9 +46,7 @@ mute_volume() {
 # Arg 2: (optional) Text to show above bar
 show_volume() {
     killall -9 -q osd_cat &>/dev/null
-
-    osd_cat     --font="$FONT"     --shadow=1     --color=green     --pos=middle     --align=center     --delay=2 --text "$( [ "z$2" = "z"  ] && echo Volume: $1% || echo $2  )"    --barmode=percentage --percentage=$1 
-
+    osd_cat --font="$FONT" --shadow=1 --color=green --pos=middle --align=center --delay=2 --text "$( [ "z$2" = "z"  ] && echo Volume: $1% || echo $2  )" --barmode=percentage --percentage=$1
 }
 
 case "$action" in
