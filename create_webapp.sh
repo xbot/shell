@@ -2,7 +2,7 @@
 # Create a shortcut for a web app.
 # Donie Leigh <donie.leigh@gmail.com>
 
-APP_DIR=~/"scripts/webapp"
+APP_DIR="$HOME/bin"
 APP_NAME=`zenity --entry \
     --title="Input App Name" \
     --text="Enter name of the app:" \
