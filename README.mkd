@@ -6,6 +6,7 @@ This repo hosts miscellaneous shell scripts I use in my daily life.
 Resources
 ---------
 
+* **/vps/backup.sh**:                          VPS backup script.
 * **karabiner-elements-profile-switcher.php**: Karabiner Elements profile switcher.
 * **wm.sh**:                                   A wrapper of wmctrl which handles common window-manager's tasks.
 * **dualhead.sh**:                             A wrapper of xrandr which sets dualhead displaying up.
