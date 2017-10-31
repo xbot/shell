@@ -9,7 +9,7 @@ BAK_FILE_NAME="vps-$NOW.tar.gz"
 BAK_FILE="$TMP_PATH/$BAK_FILE_NAME"
 DROPBOX_DIR=""
 
-docker exec -i -t "$DOCKER_ID_TTRSS" /usr/bin/pg_dump ttrss > "$TTRSS_DB"
+docker exec "$DOCKER_ID_TTRSS" /usr/bin/pg_dump ttrss > "$TTRSS_DB"
 echo "数据库备份完成，打包网站数据中..."
 tar cfzP "$BAK_FILE" "$TTRSS_DB"
 echo "所有数据打包完成，准备上传..."
